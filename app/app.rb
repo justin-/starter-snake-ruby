@@ -25,7 +25,6 @@ end
 # TODO: Use this function to decide how your snake is going to look on the board.
 post '/start' do
   request = underscore(env['rack.request.form_hash'])
-  @my_snake_id = request['you']['id']
   puts "START"
   "OK\n"
 end

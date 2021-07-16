@@ -1,27 +1,35 @@
-# This function is called on every turn of a game. It's how your Battlesnake decides where to move.
-# Valid moves are "up", "down", "left", or "right".
-# TODO: Use the information in board to decide your next move.
-def move(board)
-  @board = board.with_indifferent_access
-  puts board
+def move(params)
+  @board    = params[:board]
+  @my_snake = params[:you]
+  @my_head  = @my_snake[:head]
 
-  # Choose a random direction to move in
-  possible_moves = ["up", "down", "left", "right"]
-  move = possible_moves.sample
+  move =
+    avoid_wall(@board, @my_snake, @my_head)
 
-  puts "My snake: " + @my_snake
-
-  @last_move = move
   puts "MOVE: " + move
   { "move": move }
 end
 
-def my_snake
-  @my_snake ||= find_my_snake
-end
+def avoid_wall(board, my_snake, my_head)
+  possible_moves = {
+    left:  { x: my_head[:x] - 1 },
+    right: { x: my_head[:x] + 1 },
+    up:    { y: my_head[:y] + 1 },
+    down:  { y: my_head[:y] - 1 }
+  }
 
-def find_my_snake
-  @board[:snakes].each do |snake|
-    return snake if snake[:id] == @my_snake_id
+  board_boundaries = {
+    x: { min: 0, max: board[:width] - 1 },
+    y: { min: 0, max: board[:height] - 1 }
+  }
+
+  possible_moves.each do |direction, delta|
+    proposed_position = my_head.merge(delta)
+
+    if ((proposed_position[:x] < board_boundaries[:x][:max]) && (proposed_position[:y] < board_boundaries[:y][:max])) &&
+        ((proposed_position[:x] > board_boundaries[:x][:min]) && (proposed_position[:y] > board_boundaries[:y][:min])) &&
+        !my_snake[:body].include?(proposed_position)
+      return direction.to_s
+    end
   end
 end
