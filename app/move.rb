@@ -18,8 +18,6 @@ def do_the_math(board, my_snake, my_head, all_snakes)
     down:  { y: my_head[:y] - 1 }
   }
 
-  safe_moves = []
-
   possible_moves.each do |direction, delta|
     proposed_position = my_head.merge(delta)
 
@@ -28,10 +26,8 @@ def do_the_math(board, my_snake, my_head, all_snakes)
     next if other_snake?(all_snakes, my_snake, proposed_position)
     next if hazard?(board, proposed_position)
 
-    safe_moves << direction.to_s
+    return direction.to_s
   end
-
-  safe_moves.sample
 end
 
 def self?(my_snake, position)
