@@ -10,11 +10,11 @@ use Rack::PostBodyContentTypeParser
 # TIP: If you open your Battlesnake URL in browser you should see this data
 get '/' do
   appearance = {
-    apiversion: "1",        
-    author: "justin-",           # TODO: Your Battlesnake Username
-    color: "#9370db",     # TODO: Personalize
-    head: "caffeine",      # TODO: Personalize
-    tail: "bolt",      # TODO: Personalize
+    apiversion: "1",
+    author: "justin-",
+    color: "#9370db",
+    head: "caffeine",
+    tail: "bolt",
   }
 
   camelcase(appearance).to_json
@@ -25,6 +25,7 @@ end
 # TODO: Use this function to decide how your snake is going to look on the board.
 post '/start' do
   request = underscore(env['rack.request.form_hash'])
+  @my_snake_id = request['you']['id']
   puts "START"
   "OK\n"
 end
