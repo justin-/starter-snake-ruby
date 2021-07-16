@@ -40,8 +40,8 @@ def wall?(board, position)
     y: { min: 0, max: board[:height] - 1 }
   }
 
-  if ((position[:x] < board_boundaries[:x][:max]) && (position[:y] < board_boundaries[:y][:max])) &&
-      ((position[:x] > board_boundaries[:x][:min]) && (position[:y] > board_boundaries[:y][:min]))
+  if ((position[:x] <= board_boundaries[:x][:max]) && (position[:y] <= board_boundaries[:y][:max])) &&
+      ((position[:x] >= board_boundaries[:x][:min]) && (position[:y] >= board_boundaries[:y][:min]))
     false
   else
     true
