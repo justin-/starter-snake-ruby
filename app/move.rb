@@ -1,8 +1,8 @@
 def move(params)
-  @board    = params[:board]
-  @my_snake = params[:you]
-  @my_head  = @my_snake[:head]
-  @all_snakes = params[:board][:snakes]
+  @board      = params[:board]
+  @all_snakes = @board[:snakes]
+  @my_snake   = params[:you]
+  @my_head    = @my_snake[:head]
 
   move =
     do_the_math(@board, @my_snake, @my_head, @all_snakes)
@@ -23,7 +23,8 @@ def do_the_math(board, my_snake, my_head, all_snakes)
 
     next if self?(my_snake, proposed_position)
     next if wall?(board, proposed_position)
-    next if other_snake?(all_snakes, proposed_position)
+    next if other_snake?(all_snakes, my_snake, proposed_position)
+    next if hazard?(board, proposed_position)
 
     return direction.to_s
   end
@@ -47,11 +48,21 @@ def wall?(board, position)
   end
 end
 
-# TODO: Remove self
-def other_snake?(snakes, position)
-  snakes.each do |snake|
+def other_snake?(all_snakes, my_snake, position)
+  all_snakes.each do |snake|
+    next if snake[:id] == my_snake[:id]
+
     return true if snake[:body].include?(position)
   end
 
   false
+end
+
+def hazard?(board, position)
+  board[:hazards].include?(position)
+end
+
+def food?(board, position)
+  # TODO: Check for other snake?
+  board[:food].include?(position)
 end
