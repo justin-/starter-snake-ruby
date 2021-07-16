@@ -23,7 +23,7 @@ def do_the_math(board, my_snake, my_head, all_snakes)
 
     next if self?(my_snake, proposed_position)
     next if wall?(board, proposed_position)
-    next if other_snake?(all_snakes, my_snake, proposed_position)
+    next if other_snake?(all_snakes, my_snake, proposed_position) && !tail?(all_snakes, proposed_position)
     next if hazard?(board, proposed_position)
 
     return direction.to_s
@@ -53,6 +53,14 @@ def other_snake?(all_snakes, my_snake, position)
     next if snake[:id] == my_snake[:id]
 
     return true if snake[:body].include?(position)
+  end
+
+  false
+end
+
+def tail?(all_snakes, position)
+  all_snakes.each do |snake|
+    return true if snake[:body].last == position
   end
 
   false
