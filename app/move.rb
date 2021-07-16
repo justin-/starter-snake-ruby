@@ -65,15 +65,15 @@ def potential_head_collision?(all_snakes, my_snake, position)
   all_snakes.each do |snake|
     next if snake[:id] == my_snake[:id]
 
-    other_snakes << snake[:body]
+    other_snakes << snake
   end
 
   other_snakes.each do |other_snake|
-    other_snake_head = other_snake.first
-    return true if (other_snake_head[:x] + 1) == position && !other_snake.include?(position)
-    return true if (other_snake_head[:x] - 1) == position && !other_snake.include?(position)
-    return true if (other_snake_head[:y] + 1) == position && !other_snake.include?(position)
-    return true if (other_snake_head[:y] - 1) == position && !other_snake.include?(position)
+    other_snake_head = other_snake[:body].first
+    return true if (other_snake_head[:x] + 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:x] - 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:y] + 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:y] - 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
   end
 
   false
