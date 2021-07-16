@@ -18,7 +18,6 @@ def do_the_math(board, my_snake, my_head, all_snakes)
     down:  { y: my_head[:y] - 1 }
   }
 
-  # TODO: Randomize moves to be less predictable, but also avoid this randomness running into self etc
   possible_moves.each do |direction, delta|
     proposed_position = my_head.merge(delta)
 
@@ -27,8 +26,6 @@ def do_the_math(board, my_snake, my_head, all_snakes)
     next if other_snake?(all_snakes, my_snake, proposed_position) && !tail?(all_snakes, proposed_position)
     next if potential_head_collision?(all_snakes, my_snake, proposed_position)
     next if hazard?(board, proposed_position)
-
-    # TODO: Find food
 
     return direction.to_s
   end
@@ -62,8 +59,6 @@ def other_snake?(all_snakes, my_snake, position)
   false
 end
 
-# TODO:
-#   - Didn't detect collision: https://play.battlesnake.com/g/001343b3-e4a6-408f-8b03-5d3321b8e97c/
 def potential_head_collision?(all_snakes, my_snake, position)
   other_snakes = []
 
@@ -75,10 +70,10 @@ def potential_head_collision?(all_snakes, my_snake, position)
 
   other_snakes.each do |other_snake|
     other_snake_head = other_snake[:body].first
-    return true if (other_snake_head[:x] + 1) == position && other_snake[:length] >= my_snake[:length]
-    return true if (other_snake_head[:x] - 1) == position && other_snake[:length] >= my_snake[:length]
-    return true if (other_snake_head[:y] + 1) == position && other_snake[:length] >= my_snake[:length]
-    return true if (other_snake_head[:y] - 1) == position && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:x] + 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:x] - 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:y] + 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
+    return true if (other_snake_head[:y] - 1) == position && !other_snake[:body].include?(position) && other_snake[:length] >= my_snake[:length]
   end
 
   false
