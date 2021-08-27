@@ -18,7 +18,11 @@ def do_the_math(board, my_snake, my_head, all_snakes)
     down:  { y: my_head[:y] - 1 }
   }
 
-  possible_moves.each do |direction, delta|
+  keys = [:left, :right, :up, :down].shuffle # Randomize moves
+  keys.each do |key|
+    direction = key
+    delta     = possible_moves[key]
+
     proposed_position = my_head.merge(delta)
 
     next if self?(my_snake, proposed_position)
